@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'jobs.dart';
 import 'profile.dart';
+import 'workers.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,13 +10,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    Center(child: Text('Selamat datang di App Bengkel')),
+
+  final List<Widget> _pages = [
+    Center(child: Text('Welcome to Home Page')), // Placeholder for home content
     JobsPage(),
+    WorkerPage(),
     ProfilePage(),
   ];
 
-  void onTappedBar(int index) {
+  void _onTappedBar(int index) {
     setState(() {
       _currentIndex = index;
     });
@@ -24,10 +27,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: onTappedBar,
+        onTap: _onTappedBar,
         currentIndex: _currentIndex,
+        backgroundColor: Colors.blue,
+        selectedItemColor: Colors.blackqq,
+        unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -36,6 +45,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.work),
             label: 'Jobs',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.group),
+            label: 'Workers',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
