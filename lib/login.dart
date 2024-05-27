@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'home.dart';
 import 'register.dart';
-
+import 'model/user.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
-    var user = usersBox.get(username);
+    User? user = usersBox.get(username);
 
     if (user != null && user.password == password) {
       sessionBox.put('currentUser', username);

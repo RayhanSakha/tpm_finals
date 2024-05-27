@@ -19,7 +19,7 @@ class UserAdapter extends TypeAdapter<User> {
     return User()
       ..username = fields[0] as String
       ..password = fields[1] as String
-      ..favoriteMovies = (fields[2] as List).cast<String>();
+      ..jobTodos = (fields[2] as List).cast<String>();
   }
 
   @override
@@ -31,7 +31,7 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(1)
       ..write(obj.password)
       ..writeByte(2)
-      ..write(obj.favoriteMovies);
+      ..write(obj.jobTodos);
   }
 
   @override

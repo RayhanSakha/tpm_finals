@@ -11,5 +11,5 @@ class User extends HiveObject {
   late String password;
 
   @HiveField(2)
-  List<String> favoriteMovies = [];
+  List<String> jobTodos = [];
 }

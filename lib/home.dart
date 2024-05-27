@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'model/user.dart';
+import 'login.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,16 +23,16 @@ class _HomePageState extends State<HomePage> {
     currentUser = usersBox.get(currentUsername);
   }
 
-  void _addFavoriteMovie() {
+  void _addJobTodo() {
     showDialog(
       context: context,
       builder: (context) {
-        final TextEditingController movieController = TextEditingController();
+        final TextEditingController jobController = TextEditingController();
         return AlertDialog(
-          title: Text('Add Favorite Movie'),
+          title: Text('Add Job Todo'),
           content: TextField(
-            controller: movieController,
-            decoration: InputDecoration(labelText: 'Movie Name'),
+            controller: jobController,
+            decoration: InputDecoration(labelText: 'Job Description'),
           ),
           actions: [
             TextButton(
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             TextButton(
               onPressed: () {
                 setState(() {
-                  currentUser!.favoriteMovies.add(movieController.text);
+                  currentUser!.jobTodos.add(jobController.text);
                   currentUser!.save();
                 });
                 Navigator.pop(context);
@@ -56,11 +57,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _markJobAsDone(int index) {
+    setState(() {
+      currentUser!.jobTodos.removeAt(index);
+      currentUser!.save();
+    });
+  }
+
+  void _logout() {
+    sessionBox.delete('currentUser');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+          (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: _logout,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -72,20 +95,24 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _addFavoriteMovie,
-              child: Text('Add Favorite Movie'),
+              onPressed: _addJobTodo,
+              child: Text('Add Job Todo'),
             ),
             SizedBox(height: 20),
             Text(
-              'Your Favorite Movies:',
+              'Your Job Todos:',
               style: TextStyle(fontSize: 16),
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: currentUser?.favoriteMovies.length ?? 0,
+                itemCount: currentUser?.jobTodos.length ?? 0,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(currentUser!.favoriteMovies[index]),
+                    title: Text(currentUser!.jobTodos[index]),
+                    trailing: IconButton(
+                      icon: Icon(Icons.check),
+                      onPressed: () => _markJobAsDone(index),
+                    ),
                   );
                 },
               ),
