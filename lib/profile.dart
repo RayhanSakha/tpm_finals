@@ -34,18 +34,28 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: _logout,
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.logout),
+        //     onPressed: _logout,
+        //   ),
+        // ],
       ),
       body: Center(
-        child: Text(
-          'Profile Page\nUsername: ${currentUser?.username}',
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Profile Page\nUsername: ${currentUser?.username}',
+              style: TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20,),
+            ElevatedButton(
+              onPressed: _logout,
+              child: Text('Logout'),
+            ),
+          ]
         ),
       ),
     );

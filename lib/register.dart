@@ -44,14 +44,22 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("REGISTER", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+            SizedBox(height: 30,),
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username'),
             ),
+            SizedBox(height: 10,),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Password'),
               obscureText: true,
             ),
             SizedBox(height: 20),
