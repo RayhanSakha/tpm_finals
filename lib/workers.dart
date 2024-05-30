@@ -20,7 +20,7 @@ class _WorkerPageState extends State<WorkerPage> {
 
 
   Future<void> _fetchWorkers() async {
-    final response = await http.get(Uri.parse('https://randomuser.me/api/?results=10'));
+    final response = await http.get(Uri.parse('https://randomuser.me/api/?results=25'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final List<Worker> loadedWorkers = [];

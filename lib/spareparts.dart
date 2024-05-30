@@ -9,6 +9,7 @@ class SparepartPage extends StatefulWidget {
 
 class _SparepartPageState extends State<SparepartPage> {
   late Box<Sparepart> sparepartBox;
+  String searchQuery = "";
 
   @override
   void initState() {
@@ -122,6 +123,16 @@ class _SparepartPageState extends State<SparepartPage> {
     });
   }
 
+  List<Sparepart> _filterSpareparts(String query) {
+    if (query.isEmpty) {
+      return sparepartBox.values.toList();
+    } else {
+      return sparepartBox.values
+          .where((sparepart) => sparepart.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,19 +144,41 @@ class _SparepartPageState extends State<SparepartPage> {
             onPressed: _addSparepart,
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search spareparts...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+              },
+            ),
+          ),
+        ),
       ),
       body: ValueListenableBuilder(
         valueListenable: sparepartBox.listenable(),
         builder: (context, Box<Sparepart> box, _) {
-          if (box.values.isEmpty) {
+          final filteredSpareparts = _filterSpareparts(searchQuery);
+          if (filteredSpareparts.isEmpty) {
             return Center(
               child: Text('No spareparts available.'),
             );
           }
           return ListView.builder(
-            itemCount: box.length,
+            itemCount: filteredSpareparts.length,
             itemBuilder: (context, index) {
-              final sparepart = box.getAt(index) as Sparepart;
+              final sparepart = filteredSpareparts[index];
               return ListTile(
                 title: Text(sparepart.name),
                 subtitle: Text('Stock: ${sparepart.stock}'),
