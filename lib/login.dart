@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 import 'home.dart';
-import 'jobs.dart';
 import 'register.dart';
 import 'model/user.dart';
 
@@ -23,13 +24,20 @@ class _LoginPageState extends State<LoginPage> {
     sessionBox = Hive.box('sessionBox');
   }
 
+  String hashPassword(String password) {
+    var bytes = utf8.encode(password);
+    var digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
   void _login() {
     String username = _usernameController.text;
     String password = _passwordController.text;
+    String hashedPassword = hashPassword(password);
 
     User? user = usersBox.get(username);
 
-    if (user != null && user.password == password) {
+    if (user != null && user.password == hashedPassword) {
       sessionBox.put('currentUser', username);
       Navigator.pushReplacement(
         context,

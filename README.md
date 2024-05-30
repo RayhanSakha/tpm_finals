@@ -6,9 +6,6 @@ Setelah masuk menggunakan login , pengguna dapat membuat **List Pekerjaan** yang
 Pengguna juga dapat **Mengatur Stock** barang yang ada dengan cara **menambah atau mengurangi** stock  
 dan juga dapat **menambah atau menghapus** barang
 pada menu other terdapat juga **Konversi mata uang** dan juga **Konversi Waktu**
-
-
-fitur lain lain yang akan ditambahkan :
-1. Enkripsi pada login
+**Password terenkripsi!!!!**
 
 ## Thanks!

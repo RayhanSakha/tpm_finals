@@ -53,6 +53,13 @@ class _SparepartPageState extends State<SparepartPage> {
                 if (name.isNotEmpty && stock > 0) {
                   final newSparepart = Sparepart(name: name, stock: stock);
                   sparepartBox.add(newSparepart);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Sparepart berhasil ditambahkan')),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Nama atau jumlah sparepart tidak valid')),
+                  );
                 }
                 Navigator.pop(context);
               },
@@ -114,6 +121,9 @@ class _SparepartPageState extends State<SparepartPage> {
     setState(() {
       sparepart.delete();
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Sparepart berhasil dihapus')),
+    );
   }
 
   void _updateStock(Sparepart sparepart, int delta) {

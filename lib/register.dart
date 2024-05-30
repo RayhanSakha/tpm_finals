@@ -1,5 +1,8 @@
+// RegisterPage.dart
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 import 'model/user.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -18,13 +21,20 @@ class _RegisterPageState extends State<RegisterPage> {
     usersBox = Hive.box('usersBox');
   }
 
+  String hashPassword(String password) {
+    var bytes = utf8.encode(password);
+    var digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
   void _register() {
     String username = _usernameController.text;
     String password = _passwordController.text;
+    String hashedPassword = hashPassword(password);
 
     var user = User()
       ..username = username
-      ..password = password;
+      ..password = hashedPassword;
 
     usersBox.put(username, user);
 
