@@ -3,6 +3,7 @@ import 'jobs.dart';
 import 'profile.dart';
 import 'spareparts.dart';
 import 'workers.dart';
+import 'other.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage> {
     WorkerPage(),
     SparepartPage(),
     ProfilePage(),
+    OtherPage()
   ];
 
   void _onTappedBar(int index) {
@@ -58,6 +60,10 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more_horiz_rounded),
             label: 'Profile',
           ),
         ],
