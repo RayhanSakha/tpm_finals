@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'jobs.dart';
+import 'login.dart';
+import 'model/user.dart';
 import 'profile.dart';
 import 'spareparts.dart';
 import 'workers.dart';
@@ -12,15 +15,26 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  late Box sessionBox;
+  User? currentUser;
 
-  final List<Widget> _pages = [
-    Center(child: Text('Welcome to Home Page')), // Placeholder for home content
-    JobsPage(),
-    WorkerPage(),
-    SparepartPage(),
-    ProfilePage(),
-    OtherPage()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    sessionBox = Hive.box('sessionBox');
+    String currentUsername = sessionBox.get('currentUser');
+    currentUser = Hive.box('usersBox').get(currentUsername);
+    setState(() {}); // Trigger a rebuild to update the UI with currentUser
+  }
+
+  void _logout() {
+    sessionBox.delete('currentUser');
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+          (Route<dynamic> route) => false,
+    );
+  }
 
   void _onTappedBar(int index) {
     setState(() {
@@ -30,6 +44,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      WelcomePage(currentUser: currentUser, onLogout: _logout), // Pass currentUser and _logout to WelcomePage
+      JobsPage(),
+      WorkerPage(),
+      SparepartPage(),
+      ProfilePage(),
+      OtherPage(),
+    ];
+
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -64,9 +87,34 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_horiz_rounded),
-            label: 'Profile',
+            label: 'Other',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class WelcomePage extends StatelessWidget {
+  final User? currentUser;
+  final VoidCallback onLogout;
+
+  WelcomePage({required this.currentUser, required this.onLogout});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: onLogout,
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text('Welcome to Home Page ${currentUser?.username ?? ''}'),
       ),
     );
   }
