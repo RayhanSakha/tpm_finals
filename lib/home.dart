@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'jobs.dart';
 import 'profile.dart';
+import 'spareparts.dart';
 import 'workers.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,7 @@ class _HomePageState extends State<HomePage> {
     Center(child: Text('Welcome to Home Page')), // Placeholder for home content
     JobsPage(),
     WorkerPage(),
+    SparepartPage(),
     ProfilePage(),
   ];
 
@@ -35,7 +37,7 @@ class _HomePageState extends State<HomePage> {
         onTap: _onTappedBar,
         currentIndex: _currentIndex,
         backgroundColor: Colors.blue,
-        selectedItemColor: Colors.blackqq,
+        selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
@@ -49,6 +51,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.group),
             label: 'Workers',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.build),
+            label: 'Spareparts',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

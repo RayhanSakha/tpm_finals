@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:tpm_finals/login.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'model/sparepart.dart';
 import 'model/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(SparepartAdapter());
   await Hive.openBox('usersBox');
   await Hive.openBox('sessionBox');
+  await Hive.openBox<Sparepart>('sparepartsBox');
   runApp(MyApp());
 }
 
