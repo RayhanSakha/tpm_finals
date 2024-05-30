@@ -1,51 +1,91 @@
+// profile_page.dart
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'login.dart';
-import 'model/user.dart';
+import 'package:video_player/video_player.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Box sessionBox;
-  User? currentUser;
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    sessionBox = Hive.box('sessionBox');
-    String currentUsername = sessionBox.get('currentUser');
-    currentUser = Hive.box('usersBox').get(currentUsername);
+    _controller = VideoPlayerController.asset('videos/videos1.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
   }
 
-  void _logout() {
-    sessionBox.delete('currentUser');
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-          (Route<dynamic> route) => false,
-    );
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: _logout,
-          ),
-        ],
+        title: const Text('Profile'),
       ),
       body: Center(
-        child: Text(
-          'Profile Page\nUsername: ${currentUser?.username}',
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 100,
+                backgroundImage: AssetImage('images/fotomuka.jpg'), // Pastikan Anda memiliki gambar ini di folder assets
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Nama: Rayhan Fairuz Sakha',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'NIM: 123210028',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Kelas: IF-E',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Hobi: Movies, Literature, Music, Games',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 350),
+              _controller.value.isInitialized
+                  ? AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              )
+                  : Container(
+                child: const CircularProgressIndicator(),
+              ),
+              const SizedBox(height: 20),
+              FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    _controller.value.isPlaying
+                        ? _controller.pause()
+                        : _controller.play();
+                  });
+                },
+                child: Icon(
+                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
