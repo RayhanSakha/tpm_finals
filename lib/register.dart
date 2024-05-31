@@ -1,4 +1,3 @@
-// RegisterPage.dart
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:crypto/crypto.dart';
@@ -39,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
     usersBox.put(username, user);
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Registered Successfully'),
+      content: Text('Registrasi Berhasil'),
     ));
 
     Navigator.pop(context);

@@ -18,7 +18,6 @@ class _WorkerPageState extends State<WorkerPage> {
     _fetchWorkers();
   }
 
-
   Future<void> _fetchWorkers() async {
     final response = await http.get(Uri.parse('https://randomuser.me/api/?results=25'));
     if (response.statusCode == 200) {

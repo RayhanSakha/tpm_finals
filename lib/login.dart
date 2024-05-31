@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Invalid Credentials'),
+        content: Text('Login gagal'),
       ));
     }
   }
